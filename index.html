@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <script>
+      function createDivContainer() {
+        divContainer = document.createElement("div");
+        divContainer.classList.add("container");
+
+        document.body.appendChild(divContainer);
+        // paraElement = document.createElement("p");
+        // paraElement.textContent = "Hello World";
+        // divContainer.appendChild(paraElement);
+        createNestedDivs();
+      }
+
+      function createNestedDivs() {
+        for (let i = 1; i <= 15; i++) {
+          divNestedContainer = document.createElement("div");
+          divNestedContainer.classList.add("nested-div");
+          divContainer.appendChild(divNestedContainer);
+        }
+      }
+
+      createDivContainer();
+    </script>
+  </body>
+</html>
