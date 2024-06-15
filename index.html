@@ -7,31 +7,61 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <h1>Etch A Sketch</h1>
+    <input type="text" />
     <div class="main-container"></div>
     <script>
       let mainDivContainer = document.querySelector(".main-container");
+      let inputColor = document.querySelector("input");
+
+      inputColor.addEventListener("keydown", (event) => {
+        console.log(event.key);
+        if (event.key === "Enter") {
+          let newColor = inputColor.value;
+          updateHoverClassColor(newColor);
+        }
+      });
+
       function createDivContainer() {
-        for (let i = 1; i <= 15; i++) {
-          divContainer = document.createElement("div");
+        for (let i = 1; i <= 16; i++) {
+          let divContainer = document.createElement("div");
           divContainer.classList.add("container");
 
           mainDivContainer.appendChild(divContainer);
-          // document.body.appendChild(divContainer);
-          // paraElement = document.createElement("p");
-          // paraElement.textContent = "Hello World";
-          // divContainer.appendChild(paraElement);
-          createNestedDivs();
+
+          createNestedDivs(divContainer);
         }
       }
 
-      function createNestedDivs() {
-        for (let i = 1; i <= 15; i++) {
-          divNestedContainer = document.createElement("div");
+      function createNestedDivs(divContainer) {
+        for (let i = 1; i <= 16; i++) {
+          let divNestedContainer = document.createElement("div");
           divNestedContainer.classList.add("nested-div");
+          divNestedContainer.addEventListener("mouseover", () => {
+            divNestedContainer.classList.add("hover");
+          });
           divContainer.appendChild(divNestedContainer);
         }
       }
 
+      function updateHoverClassColor(newColor) {
+        // Update the CSS for the `.hover` class dynamically
+        const styleSheet = document.styleSheets[0];
+
+        // Check if there's already a rule for .hover and update it if so
+        for (let i = 0; i < styleSheet.cssRules.length; i++) {
+          if (styleSheet.cssRules[i].selectorText === ".hover") {
+            styleSheet.cssRules[i].style.backgroundColor = newColor;
+            return;
+          }
+        }
+
+        // If no rule exists for .hover, insert a new one
+        styleSheet.insertRule(
+          `.hover { background-color: ${newColor}; }`,
+          styleSheet.cssRules.length
+        );
+      }
       createDivContainer();
     </script>
   </body>
