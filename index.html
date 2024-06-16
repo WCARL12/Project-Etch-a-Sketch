@@ -7,23 +7,47 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Etch A Sketch</h1>
-    <input type="text" />
-    <div class="main-container"></div>
+    <header>
+      <h1>Etch A Sketch</h1>
+      <div class="get-color">
+        <form onsubmit="return false;">
+          <div>
+            <label for="colorInput">Enter a color: </label>
+            <input type="text" name="colorInput" id="colorInput" />
+          </div>
+
+          <div class="show-current-color"></div>
+        </form>
+      </div>
+    </header>
+    <main>
+      <div class="main-container"></div>
+    </main>
+
     <script>
       let mainDivContainer = document.querySelector(".main-container");
       let inputColor = document.querySelector("input");
+      let showCurrentColor = document.querySelector(".show-current-color");
+
+      let divGridNumber = Number(
+        prompt("How many row & column grids do you want: ")
+      );
+
+      let newColor = "black";
+
+      showCurrentColor.style.backgroundColor = newColor;
 
       inputColor.addEventListener("keydown", (event) => {
         console.log(event.key);
         if (event.key === "Enter") {
-          let newColor = inputColor.value;
-          updateHoverClassColor(newColor);
+          newColor = inputColor.value;
+          showCurrentColor.style.backgroundColor = newColor;
+          // updateHoverClassColor(newColor);
         }
       });
 
       function createDivContainer() {
-        for (let i = 1; i <= 16; i++) {
+        for (let i = 1; i <= divGridNumber; i++) {
           let divContainer = document.createElement("div");
           divContainer.classList.add("container");
 
@@ -34,34 +58,24 @@
       }
 
       function createNestedDivs(divContainer) {
-        for (let i = 1; i <= 16; i++) {
+        for (let i = 1; i <= divGridNumber; i++) {
           let divNestedContainer = document.createElement("div");
           divNestedContainer.classList.add("nested-div");
+
           divNestedContainer.addEventListener("mouseover", () => {
-            divNestedContainer.classList.add("hover");
+            divNestedContainer.setAttribute(
+              "style",
+              `background-color: ${newColor || "white"};`
+            );
+            let computedStyle = getComputedStyle(divNestedContainer);
+            // Show the current color in the specified element
+            showCurrentColor.style.backgroundColor =
+              computedStyle.backgroundColor;
           });
           divContainer.appendChild(divNestedContainer);
         }
       }
 
-      function updateHoverClassColor(newColor) {
-        // Update the CSS for the `.hover` class dynamically
-        const styleSheet = document.styleSheets[0];
-
-        // Check if there's already a rule for .hover and update it if so
-        for (let i = 0; i < styleSheet.cssRules.length; i++) {
-          if (styleSheet.cssRules[i].selectorText === ".hover") {
-            styleSheet.cssRules[i].style.backgroundColor = newColor;
-            return;
-          }
-        }
-
-        // If no rule exists for .hover, insert a new one
-        styleSheet.insertRule(
-          `.hover { background-color: ${newColor}; }`,
-          styleSheet.cssRules.length
-        );
-      }
       createDivContainer();
     </script>
   </body>
